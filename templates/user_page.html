@@ -1,0 +1,30 @@
+{% extends "base.html"%}
+
+
+{% block title %}
+User page
+{% endblock  %}
+
+{% block body %}
+  <section class="inner-page">
+    <div class="container">
+      <p>
+       <h4> <b>Some User Data here</b></h4>
+
+        {% if context%}
+        <table>
+          <tr>
+              <td>Username:</td> <td>{{context.username}}</td>
+          </tr>
+
+          <tr>
+              <td>Name:</td> <td> {{context.user_name}}</td>
+          </tr>
+
+      </table>
+
+          {% endif %}
+      </p>
+    </div>
+  </section>
+{% endblock %}

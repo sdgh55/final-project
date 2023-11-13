@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <title>{% block title %}{% endblock  %}</title>
+
+</head>
+<body>
+   <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+       <h5 class="my-0 mr-md-auto font-weight-normal">Postgram</h5>
+       <nav class="my-2 my-md-0 mr-md-3">
+           <a class="p-2 text-dark" href="/">Home</a>
+           <a class="p-2 text-dark" href="/about">About</a>
+           <a class="p-2 text-dark" href="/posts">Posts</a>
+           {% if session.authenticated %}
+           <a class="p-2 text-dark" href="/logout">Log out</a>
+           {% else %}
+           <a class="btn btn-warning" href="/login">Log in</a>
+           <a class="btn btn-warning" href="/register">Register</a>
+           {% endif%}
+       </nav>
+       <a class="btn btn-warning" href="/create">Add new post</a>
+   </div>
+       {% block body %}{% endblock  %}
+<footer class="pt-4 my-md-5 pt-md-5 border-top">
+    <div class="row">
+      <div class="col-12 col-md">
+        <img class="mb-2" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="24" height="19">
+        <small class="d-block mb-3 text-body-secondary" _msttexthash="1859377" _msthash="46">© 2017–2023 гг.</small>
+      </div>
+      <div class="col-6 col-md">
+        <h5 _msttexthash="984971" _msthash="47">Функции</h5>
+        <ul class="list-unstyled text-small">
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#" _msttexthash="2381600" _msthash="48">Классная штука</a></li>
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#" _msttexthash="3278431" _msthash="49">Случайная функция</a></li>
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#" _msttexthash="2834923" _msthash="50">Функция «Команда»</a></li>
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#" _msttexthash="6244706" _msthash="51">Материал для разработчиков</a></li>
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#" _msttexthash="982085" _msthash="52">Еще один</a></li>
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#" _msttexthash="1858090" _msthash="53">В прошлый раз</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md">
+        <h5 _msttexthash="988546" _msthash="54">Ресурсы</h5>
+        <ul class="list-unstyled text-small">
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#" _msttexthash="802815" _msthash="55">Ресурс</a></li>
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#" _msttexthash="1620216" _msthash="56">Имя ресурса</a></li>
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#" _msttexthash="2381314" _msthash="57">Еще один ресурс</a></li>
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#" _msttexthash="2667782" _msthash="58">Конечный ресурс</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md">
+        <h5 _msttexthash="631592" _msthash="59">Около</h5>
+        <ul class="list-unstyled text-small">
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#" _msttexthash="978861" _msthash="60">Команда</a></li>
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#" _msttexthash="2957227" _msthash="61">Местонахождения</a></li>
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#" _msttexthash="3938324" _msthash="62">Конфиденциальность</a></li>
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#" _msttexthash="985985" _msthash="63">Условия</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
