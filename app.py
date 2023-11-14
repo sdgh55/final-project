@@ -1,6 +1,7 @@
 from flask import render_template, url_for, request, redirect, session
 from flaskapp import *
 from werkzeug.security import generate_password_hash, check_password_hash
+from messages import *
 
 
 @app.route('/')
