@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Creating
+{% endblock  %}
+
+{% block body %}
+<div class="container mt-5">
+<h1>Add new post</h1>
+<form method="post" class="form-control">
+    <input type="text" name="title" id="title" class="form-control" placeholder="Receiver username">
+    <input type="text" name="text" id="text" class="form-control" placeholder="Input text">
+    <button class="btn btn-success" type="submit">Add</button>
+</form>
+</div>
+{% endblock  %}
