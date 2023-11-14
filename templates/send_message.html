@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Creating
+Send message
 {% endblock  %}
 
 {% block body %}
 <div class="container mt-5">
-<h1>Add new post</h1>
+<h1>Send message</h1>
+
 <form method="post" class="form-control">
-    <input type="text" name="title" id="title" class="form-control" placeholder="Receiver username">
-    <input type="text" name="text" id="text" class="form-control" placeholder="Input text">
-    <button class="btn btn-success" type="submit">Add</button>
+    <input type="text" name="receiver_username" id="receiver_username" class="form-control" placeholder="Receiver username">
+    <input type="text" name="message" id="message" class="form-control" placeholder="Input your message">
+    <button class="btn btn-success" type="submit">Send</button>
 </form>
 </div>
 {% endblock  %}
