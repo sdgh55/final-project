@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Friends
+{% endblock  %}
+
+
+{% block body %}
+<div class="container mt-5">
+    <h1>All friends</h1>
+    {% for friend in friends %}
+    <div class="alert alert-info">
+        <h4>{{ friend.friend.name }}</h4>>
+        <p><b>Date adding: {{.date.date() }}</b></p>
+        <a href="/add_friend/{{post.id}}" class="btn btn-warning">Read more</a>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock  %}

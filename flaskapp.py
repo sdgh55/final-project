@@ -16,6 +16,7 @@ class User(db.Model):
     username = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
     articles = db.relationship('Article', back_populates='user')
+    friends = db.relationship('Friendship', foreign_keys=[Friendship.user_id], backref='user', lazy='dynamic')
 
     def __repr__(self):
         return f"<User % {self.id}>"
@@ -43,3 +44,16 @@ class Message(db.Model):
 
     def __repr__(self):
         return f"<Message % {self.id}>"
+
+
+class Friendship(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    friend_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    status = db.Column(db.String(20), default='pending')
+    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+    user = db.relationship('User', foreign_keys=[user_id])
+    friend = db.relationship('User', foreign_keys=[friend_id])
+
+    def __repr__(self):
+        return f"<Friendship % {self.id}>"
