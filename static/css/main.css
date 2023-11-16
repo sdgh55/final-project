@@ -29,3 +29,39 @@
     border-radius: 5px; /* Скругленные углы */
     margin: 10px; /* Отступ между карточками */
 }
+
+.text {
+  text-align: center;
+  text-transform: uppercase;
+  color: #30799B;
+}
+
+.text2 {
+  text-indent: 50px;
+  text-align: justify;
+  letter-spacing: 3px;
+}
+
+.containers{
+    position: sticky;
+    top:0;
+    z-index:1000;
+
+}
+
+.back-colours{
+    background-color: cornflowerblue;
+}
+
+.margin-nurda{
+margin-top: -25px;
+padding: 0;
+}
+
+.back-color-nurda{
+    background-color: white;
+}
+
+.sula{
+    color:white;
+}
