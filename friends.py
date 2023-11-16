@@ -9,7 +9,7 @@ def my_friends():
         user = User.query.get(user_id)
 
         friends = (Friendship.query.filter(
-            (Friendship.user1_id == user_id) | (Friendship.user2_id == user_id))
+            (Friendship.user_id == user_id) | (Friendship.user_id == user_id))
             .filter(Friendship.status == "accepted").all()
         )
         return render_template('friends.html', friends=friends)
@@ -18,25 +18,33 @@ def my_friends():
 
 
 
-@app.route('/add_friend/<int:user2_id>')
-def add_friend(friend_id):
+@app.route('/add_friend', methods=['POST'])
+def add_friend():
     if 'id' in session:
         user_id = session['id']
+        user = User.query.get(user_id)
 
-        #checking friendship
-        existing_friendship = Friendship.query.filter_by(user_id=user_id, friend_id=friend_id).first()
-        if existing_friendship:
-            return redirect('/friends')
+        friend_username = request.form.get('friend_username')
+        friend = User.query.filter_by(username=friend_username).first()
+
+        if friend:
+            #checking friendship
+            existing_friendship = Friendship.query.filter_by(user_id=user.id, friend_id=friend.id).first()
+            if existing_friendship:
+                return redirect('/friends')
 
 
-        new_friendship = Friendship(user_id=user_id, friend_id=friend_id, status='pending')
+            new_friendship = Friendship(user_id=user.id, friend_id=friend.id, status='pending')
 
-        try:
-            db.session.add(new_friendship)
-            db.session.commit()
-            return redirect('/friends')
-        except:
-            return 'Error while adding friend'
+            try:
+                db.session.add(new_friendship)
+                db.session.commit()
+                return redirect('/friends')
+            except:
+                return 'Error while adding friend'
+
+        else:
+            return "Friend not found"
 
     else:
         return redirect('/login')
@@ -47,9 +55,10 @@ def view_friends():
     if 'id' in session:
         user_id = session['id']
         user = User.query.get(user_id)
-        friends = user.friends.all()
+        friendships = user.friends.filter_by(status='accepted').all()
+        #friends = [friendships.friend for friendship in friendships]
 
-        return render_template('friends.html', friends=friends)
+        return render_template('friends.html', friendships=friendships)
 
     else:
         return redirect('/login')

@@ -8,13 +8,19 @@ Friends
 {% block body %}
 <div class="container mt-5">
     <h1>All friends</h1>
-    {% for friend in friends %}
+
+    {% for friend in friendships %}
     <div class="alert alert-info">
-        <h4>{{ friend.friend.name }}</h4>>
-        <p><b>Date adding: {{.date.date() }}</b></p>
-        <a href="/add_friend/{{post.id}}" class="btn btn-warning">Read more</a>
+        <h4>{{ friend.friend_rel.name }}</h4>
+        <p><b>Date adding: {{friend.date_added.date() }}</b></p>
     </div>
     {% endfor %}
+     <div class="alert alert-info">
+         <form method="post" action="{{ url_for('add_friend') }}">
+            <input type="text" name="friend_username" id="friend_username" class="form-control" placeholder="Input friend username">
+            <input type="submit" class="btn btn-warning" value="Send friendship">
+         </form>
+     </div>
 </div>
 
 {% endblock  %}

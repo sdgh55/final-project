@@ -10,11 +10,9 @@ Friend requests
     <h1>Requests to friendship</h1>
     {% for request in friend_requests %}
     <div class="alert alert-info">
-    {% if request is None %}
-        You have not requests to friendship
-    {% else %}
-        <h4>{{ request.user.name }} wants to be your friend</h4>>
-        <p><b>Date of request: {{request.date.date() }}</b></p>
+    {% if request %}
+        <h4>{{ request.user.name }} wants to be your friend</h4>
+        <p><b>Date of request: {{request.date_added.date() }}</b></p>
         <hr>
                 <form method="post" action="{{ url_for('accept_friend', request_id=request.id) }}">
                     <input type="submit" class="btn btn-success" value="Accept">
@@ -22,8 +20,10 @@ Friend requests
                 <form method="post" action="{{ url_for('decline_friend', request_id=request.id) }}">
                     <input type="submit" class="btn btn-danger" value="Decline">
                 </form>
+    {% else %}
+        <p>You have not requests to friendship</p>
+    {% endif %}
     </div>
-    {% endfor %}
     {% endfor %}
 </div>
 
