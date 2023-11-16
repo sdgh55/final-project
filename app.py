@@ -61,7 +61,9 @@ def login():
             session["username"] = user.username
             return redirect('/posts')
         else:
-            return render_template("login.html", context="The username or password is incorrect")
+            flash('Username or password incorrect. Please try again.', 'error')
+            return redirect('/login')
+
 
     return render_template("login.html", context=None)
 

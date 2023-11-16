@@ -1,5 +1,6 @@
-from flask import render_template, url_for, request, redirect, session
+from flask import render_template, url_for, request, redirect, session, flash
 from flaskapp import *
+from flask import abort
 
 
 @app.route('/my_friends')
@@ -25,12 +26,21 @@ def add_friend():
         user = User.query.get(user_id)
 
         friend_username = request.form.get('friend_username')
+
+        if friend_username == user.username:
+            flash('You cannot send a friend request to yourself.', 'error')
+            return redirect('/friends')
+
         friend = User.query.filter_by(username=friend_username).first()
 
         if friend:
             #checking friendship
-            existing_friendship = Friendship.query.filter_by(user_id=user.id, friend_id=friend.id).first()
+            existing_friendship = Friendship.query.filter(
+                (Friendship.user_id == user.id) & (Friendship.friend_id == friend.id),
+                Friendship.status != 'declined'
+            ).first()
             if existing_friendship:
+                flash('Friend request already sent or you are already friends.', 'error')
                 return redirect('/friends')
 
 
@@ -100,3 +110,24 @@ def decline_friend(request_id):
         db.session.commit()
 
     return redirect('/friend_requests')
+
+
+@app.route('/remove_friend/<int:friend_id>', methods=['POST', 'GET'])
+def remove_friend(friend_id):
+    if 'id' in session:
+        user_id = session['id']
+        user = User.query.get(user_id)
+
+        friendship_to_remove = Friendship.query.get_or_404(friend_id)
+
+
+        try:
+            db.session.delete(friendship_to_remove)
+            db.session.commit()
+        except Exception as e:
+            app.logger.error(f"Error removing friendship: {e}")
+            abort(500)
+        return redirect('/friends')
+
+    else:
+        return redirect('/login')

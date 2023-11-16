@@ -14,13 +14,27 @@ Friends
         <h4>
             {% if friendship.user_id == user.id %}
                 {{ friendship.friend_rel.name }}
+                <form id="removeFriendForm_{{ friendship.friend_rel.id }}" method="post" action="{{ url_for('remove_friend', friend_id=friendship.id) }}">
+                    <input type="submit" class="btn btn-danger" value="Remove Friend">
+                </form>
+                <form method="get" action="{{ url_for('send_message') }}">
+                    <input type="hidden" name="receiver_username" value="{{ friendship.friend_rel.username }}">
+                    <input type="submit" class="btn btn-primary" value="Send Message">
+                </form>
             {% else %}
                 {{ friendship.user_rel.name }}
+                <form id="removeFriendForm_{{ friendship.user_rel.id }}" method="post" action="{{ url_for('remove_friend', friend_id=friendship.id) }}">
+                    <input type="submit" class="btn btn-danger" value="Remove Friend">
+                </form>
+                <form method="get" action="{{ url_for('send_message') }}">
+                    <input type="hidden" name="receiver_username" value="{{ friendship.user_rel.username }}">
+                    <input type="submit" class="btn btn-primary" value="Send Message">
+                </form>
             {% endif %}
         </h4>
-        <p><b>Date adding: {{friendship.date_added.date() }}</b></p>
+        <p><b>Date adding: {{ friendship.date_added.date() }}</b></p>
     </div>
-    {% endfor %}
+{% endfor %}
      <div class="alert alert-info">
          <form method="post" action="{{ url_for('add_friend') }}">
             <input type="text" name="friend_username" id="friend_username" class="form-control" placeholder="Input friend username">
@@ -28,5 +42,17 @@ Friends
          </form>
      </div>
 </div>
+
+    {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="alert alert-info">
+      <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+{% endwith %}
 
 {% endblock  %}
