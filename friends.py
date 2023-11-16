@@ -55,10 +55,13 @@ def view_friends():
     if 'id' in session:
         user_id = session['id']
         user = User.query.get(user_id)
-        friendships = user.friends.filter_by(status='accepted').all()
+        friendships = Friendship.query.filter(
+            ((Friendship.user_id == user_id) | (Friendship.friend_id == user_id)),
+            Friendship.status == 'accepted'
+        ).all()
         #friends = [friendships.friend for friendship in friendships]
 
-        return render_template('friends.html', friendships=friendships)
+        return render_template('friends.html', friendships=friendships, user=user)
 
     else:
         return redirect('/login')
