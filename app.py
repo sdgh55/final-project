@@ -31,6 +31,7 @@ def register_user():
 
         existing_user = User.query.filter_by(username=username).first()
         if existing_user:
+            flash("Username already taken. Please choose a different username.", 'error')
             return redirect(url_for("register_user", error="Already registered!"))
 
         hashed_password = generate_password_hash(password1, method='pbkdf2:sha1')
