@@ -23,6 +23,11 @@ def chat(receiver_id):
             # Generate a unique conversation ID using user IDs
             conversation_id = f"{user_id}_{receiver_id}"
 
+            socketio.emit('user_joined', {
+                'user_id': user_id,
+                'username': User.query.get(user_id).name,
+            }, room=conversation_id)
+
             # Retrieve messages for the conversation
             messages = Chat.query.filter_by(conversation_id=conversation_id).all()
 
@@ -65,10 +70,19 @@ def handle_join(data):
     # Generate conversation_id based on user IDs
     user_ids = sorted([sender_id, receiver_id])
     conversation_id = '_'.join(map(str, user_ids))
+    messages = Chat.query.filter_by(conversation_id=conversation_id).order_by(Chat.created_at).all()
 
     # Join the conversation room
     join_room(conversation_id)
     print(f'User {sender_id} joined conversation {conversation_id}')
+
+    serialized_messages = [
+        {'sender': msg.sender.to_dict(), 'content': msg.content, 'sender_id': msg.sender_id}
+        for msg in messages
+    ]
+
+    socketio.emit('load_messages', serialized_messages, room=conversation_id)
+
 
 
 @socketio.on('leave')

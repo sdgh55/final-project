@@ -4,7 +4,7 @@ from datetime import datetime
 from flask_migrate import Migrate
 from flask_socketio import SocketIO, send, join_room, leave_room
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog12.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog13.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -19,12 +19,15 @@ class User(db.Model):
     username = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
     articles = db.relationship('Article', back_populates='user')
-    sent_messages = db.relationship('Chat', foreign_keys='Chat.sender_id', backref='sent_messages_user')
-    received_messages = db.relationship('Chat', foreign_keys='Chat.receiver_id', backref='received_messages_user')
+    sent_messages = db.relationship('Chat', foreign_keys='Chat.sender_id', back_populates='sender')
+    received_messages = db.relationship('Chat', foreign_keys='Chat.receiver_id', back_populates='receiver')
     friends = db.relationship('Friendship', foreign_keys='Friendship.user_id', backref='user', lazy='dynamic')
 
     def __repr__(self):
         return f"<User % {self.id}>"
+
+    def to_dict(self):
+        return {'id': self.id, 'name': self.name, 'username': self.username}
 
 class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -37,6 +40,7 @@ class Article(db.Model):
     def __repr__(self):
         return f"<Article % {self.id}>"
 
+
 class Chat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
@@ -45,8 +49,8 @@ class Chat(db.Model):
     receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    sender = db.relationship('User', foreign_keys=[sender_id], backref='sent_messages1')
-    receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_messages1')
+    sender = db.relationship('User', foreign_keys=[sender_id], back_populates='sent_messages')
+    receiver = db.relationship('User', foreign_keys=[receiver_id], back_populates='received_messages')
 
     def __repr__(self):
         return f"<Chat % {self.id}>"

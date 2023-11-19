@@ -5,9 +5,47 @@ Chat with {{ receiver.name }}
 {% endblock  %}
 
 {% block body %}
+    <style>
+    .container {
+        width: 80%;
+        margin: auto;
+    }
+
+    #chat-window {
+        border: 1px solid #ccc;
+        padding: 10px;
+        height: 300px;
+        overflow-y: scroll;
+        margin-bottom: 10px;
+    }
+
+    .notification {
+        color: #888;
+    }
+
+    .message {
+        padding: 5px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+    }
+
+    .sent {
+        background-color: blue;
+        float: right;
+        clear: both;
+    }
+
+    .received {
+        background-color: #a0a0a0;
+        float: left;
+        clear: both;
+    }
+</style>
 <div class="container mt-5">
     <h1>Chat with {{ receiver.name }}</h1>
+    <div id="chat-window">
     <ul id="messages"></ul>
+    </div>
     <form id="form" action="">
         <input id="input" autocomplete="off" /><button>Send</button>
     </form>
@@ -21,9 +59,36 @@ Chat with {{ receiver.name }}
     // Emit a 'join' event when the page loads
     socket.emit('join', {'sender_id': senderId, 'receiver_id': receiverId});
 
+    socket.on('load_messages', function (previousMessages) {
+    var ul = document.getElementById('messages');
+
+    // Выводим предыдущие сообщения
+    previousMessages.forEach(function (msg) {
+        var li = document.createElement('li');
+
+        if (msg.sender_id === senderId) {
+            li.className = 'message sent';
+        } else {
+            li.className = 'message received';
+        }
+
+        li.appendChild(document.createTextNode(msg.sender.name + ': ' + msg.content));
+        ul.appendChild(li);
+    });
+});
+
+
+
     socket.on('message', function(msg){
         var ul = document.getElementById('messages');
         var li = document.createElement('li');
+
+        if (msg.sender_id === senderId) {
+            li.className = 'message sent';
+        } else {
+            li.className = 'message received';
+        }
+
         li.appendChild(document.createTextNode(msg.sender + ': ' + msg.content));
         ul.appendChild(li);
     });
