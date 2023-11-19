@@ -17,8 +17,7 @@ Friends
                 <form id="removeFriendForm_{{ friendship.friend_rel.id }}" method="post" action="{{ url_for('remove_friend', friend_id=friendship.id) }}">
                     <input type="submit" class="btn btn-danger" value="Remove Friend">
                 </form>
-                <form method="get" action="{{ url_for('send_message') }}">
-                    <input type="hidden" name="receiver_username" value="{{ friendship.friend_rel.username }}">
+                <form method="get" action="{{ url_for('chat', receiver_id=friendship.friend_rel.id) }}">
                     <input type="submit" class="btn btn-primary" value="Send Message">
                 </form>
             {% else %}
@@ -26,8 +25,7 @@ Friends
                 <form id="removeFriendForm_{{ friendship.user_rel.id }}" method="post" action="{{ url_for('remove_friend', friend_id=friendship.id) }}">
                     <input type="submit" class="btn btn-danger" value="Remove Friend">
                 </form>
-                <form method="get" action="{{ url_for('send_message') }}">
-                    <input type="hidden" name="receiver_username" value="{{ friendship.user_rel.username }}">
+                <form method="get" action="{{ url_for('chat', receiver_id=friendship.user_rel.id) }}">
                     <input type="submit" class="btn btn-primary" value="Send Message">
                 </form>
             {% endif %}

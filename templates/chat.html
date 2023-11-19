@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Chat with {{ receiver.name }}
+{% endblock  %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Chat with {{ receiver.name }}</h1>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+        <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+<script>
+    var socket = io.connect('http://127.0.0.1:5000');
+    var senderId = "{{ session['id'] }}";
+    var receiverId = "{{ receiver.id }}";
+
+    // Emit a 'join' event when the page loads
+    socket.emit('join', {'sender_id': senderId, 'receiver_id': receiverId});
+
+    socket.on('message', function(msg){
+        var ul = document.getElementById('messages');
+        var li = document.createElement('li');
+        li.appendChild(document.createTextNode(msg.sender + ': ' + msg.content));
+        ul.appendChild(li);
+    });
+
+    document.getElementById('form').onsubmit = function(){
+        var input = document.getElementById('input');
+        socket.emit('message', {'sender_id': senderId, 'receiver_id': receiverId, 'content': input.value});
+        input.value = '';
+        return false;
+    };
+
+    // Handle disconnection: emit a 'leave' event when the page is closed or unloaded
+    window.onbeforeunload = function() {
+        socket.emit('leave', {'sender_id': senderId, 'receiver_id': receiverId});
+    };
+</script>
+{% endblock %}

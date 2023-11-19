@@ -3,11 +3,14 @@ from flaskapp import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from messages import *
 from friends import *
+from chats import *
+
 
 @app.route('/')
 @app.route('/home')
 def index():
     return render_template("index.html")
+
 
 @app.route('/about')
 def about():
@@ -180,4 +183,7 @@ def update(id):
 
 
 if __name__ == "__main__":
-        app.run(debug=True)
+        #app.run(debug=True)
+        socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
+        #socketio.run(app, debug=True, use_reloader=False, host='0.0.0.0', port=5000, allow_unsafe_werkzeug=True)
+
