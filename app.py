@@ -4,6 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from messages import *
 from friends import *
 from chats import *
+from posting import *
+from user_page import *
 
 
 @app.route('/')
@@ -94,43 +96,6 @@ def update_account(id):
 
 
 
-@app.route('/create', methods=['POST', 'GET'])
-def create():
-
-    if 'id' in session:
-        user_id = session['id']
-
-        if request.method == 'POST':
-            title = request.form['title']
-            text = request.form['text']
-
-            article = Article(title=title, text=text, user_id=user_id)
-            try:
-                db.session.add(article)
-                db.session.commit()
-                return redirect('/posts')
-
-            except:
-                return 'Error while adding new post'
-
-
-        else:
-            return render_template('create.html')
-
-    else:
-        return redirect('/login')
-
-
-
-@app.route('/posts')
-def posts():
-    if 'id' in session:
-        user_id = session['id']
-        articles = Article.query.order_by(Article.date.desc()).all()
-        return render_template('posts.html', posts=articles)
-    else:
-        return redirect('/login')
-
 
 
 @app.route("/logout")
@@ -140,44 +105,6 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
 
-
-@app.route('/posts/<int:id>')
-def posts_detail(id):
-    article = Article.query.get(id)
-    return render_template("post_detail.html", post=article)
-
-
-@app.route('/posts/<int:id>/del')
-def delete(id):
-    article = Article.query.get_or_404(id)
-
-    try:
-        db.session.delete(article)
-        db.session.commit()
-        return redirect('/posts')
-    except:
-        return "Error while deleting post"
-
-
-@app.route('/posts/<int:id>/update', methods=['POST', 'GET'])
-def update(id):
-    article = Article.query.get(id)
-    if request.method == 'POST':
-        article.title = request.form['title']
-        article.text = request.form['text']
-
-
-        try:
-            db.session.commit()
-            return redirect('/posts')
-
-        except:
-            return 'Error while updating new post'
-
-
-    else:
-        article = Article.query.get(id)
-        return render_template('post_update.html', posts=article)
 
 
 

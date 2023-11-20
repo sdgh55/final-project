@@ -6,6 +6,8 @@ from flask_socketio import SocketIO, send, join_room, leave_room
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog13.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['UPLOAD_FOLDER_PROFILE'] = 'static/images/profile'
+app.config['UPLOAD_FOLDER_POST_IMAGE'] = 'static/images/post_image'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 socketio = SocketIO(app)
@@ -22,6 +24,7 @@ class User(db.Model):
     sent_messages = db.relationship('Chat', foreign_keys='Chat.sender_id', back_populates='sender')
     received_messages = db.relationship('Chat', foreign_keys='Chat.receiver_id', back_populates='receiver')
     friends = db.relationship('Friendship', foreign_keys='Friendship.user_id', backref='user', lazy='dynamic')
+    profile_image = db.Column(db.String(255))
 
     def __repr__(self):
         return f"<User % {self.id}>"
@@ -32,10 +35,12 @@ class User(db.Model):
 class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
+    image_path = db.Column(db.String(255))
     text = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', back_populates='articles')
+
 
     def __repr__(self):
         return f"<Article % {self.id}>"

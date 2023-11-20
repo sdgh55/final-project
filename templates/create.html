@@ -7,10 +7,23 @@ Creating
 {% block body %}
 <div class="container mt-5">
 <h1>Add new post</h1>
-<form method="post" class="form-control">
-    <input type="text" name="title" id="title" class="form-control" placeholder="Input title">
-    <input type="text" name="text" id="text" class="form-control" placeholder="Input text">
-    <button class="btn btn-success" type="submit">Add</button>
+<form method="post" class="form-control", enctype="multipart/form-data">
+   {{ form.hidden_tag() }}
+        <div>
+            {{ form.title.label }}
+            {{ form.title }}
+        </div>
+        <div>
+            {{ form.text.label }}
+            {{ form.text }}
+        </div>
+        <div>
+            {{ form.image.label }}
+            {{ form.image }}
+        </div>
+        <div>
+            {{ form.submit }}
+        </div>
 </form>
 </div>
 {% endblock  %}

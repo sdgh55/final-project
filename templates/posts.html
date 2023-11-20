@@ -10,6 +10,9 @@ Posts
     <h1>All posts</h1>
     {% for post in posts %}
     <div class="alert alert-info">
+     {% if post.image_path %}
+        <img src="{{ post.image_path }}" alt="Post Image">
+     {% endif %}
         <h2>{{post.title}}</h2>
         <hr>
         <p><b>Date: {{post.date.date() }}</b></p>

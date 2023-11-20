@@ -28,6 +28,7 @@
         <li class="nav-item"><a href="/friends" class="nav-link">Friends</a></li>
         <li class="nav-item"><a href="/friend_requests" class="nav-link">Friend requests</a></li>
           {% if session.authenticated %}
+              <li class="nav-item"><a href="/user_page" class="nav-link">Friend requests</a></li>
               <a href="/create" class="nav-link active" aria-current="page">Add new post</a>
               <li class="nav-item"><a href="/logout" class="nav-link active" aria-current="page">Log out</a></li>
            {% else %}
