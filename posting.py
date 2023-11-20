@@ -1,4 +1,5 @@
 from werkzeug.utils import secure_filename
+from flask import send_from_directory
 
 from flaskapp import *
 from flask import render_template, url_for, request, redirect, session, flash
@@ -8,6 +9,7 @@ from wtforms import StringField, TextAreaField, SubmitField
 from wtforms.validators import DataRequired
 import os
 
+from user_page import allowed_file
 
 
 class ArticleForm(FlaskForm):
@@ -77,6 +79,9 @@ def posts_detail(id):
     article = Article.query.get(id)
     return render_template("post_detail.html", post=article)
 
+@app.route('/static/images/posts/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER_POST_IMAGE'], filename)
 
 @app.route('/posts/<int:id>/del')
 def delete(id):
@@ -91,12 +96,21 @@ def delete(id):
 
 
 @app.route('/posts/<int:id>/update', methods=['POST', 'GET'])
-def update(id):
+def update_post(id):
     article = Article.query.get(id)
-    if request.method == 'POST':
-        article.title = request.form['title']
-        article.text = request.form['text']
+    form = ArticleForm(obj=article)
 
+    if request.method == 'POST' and form.validate_on_submit():
+        form.populate_obj(article)
+
+        # Обработка загрузки нового изображения
+        if 'image' in request.files:
+            image = request.files['image']
+            if image and allowed_file(image.filename):
+                filename = secure_filename(image.filename)
+                image_path = os.path.join(app.config['UPLOAD_FOLDER_POST_IMAGE'], filename)
+                image.save(image_path)
+                article.image_path = image_path
 
         try:
             db.session.commit()
@@ -105,8 +119,4 @@ def update(id):
         except:
             return 'Error while updating new post'
 
-
-    else:
-        article = Article.query.get(id)
-        return render_template('post_update.html', posts=article)
-
+    return render_template('post_update.html', form=form)
