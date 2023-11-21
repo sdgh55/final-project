@@ -8,11 +8,10 @@ Posts
 {% endblock %}
 
 {% block body %}
-
 <div class="container mt-5">
+    {% for post in posts %}
   <div class="row">
     <div class="col-12">
-      {% for post in posts %}
       <article class="blog-card">
         <div class="blog-card__background">
           <div class="card__background--wrapper">
@@ -48,5 +47,20 @@ Posts
 
   </div>
 </section>
+    <script>$(window).on('load',function () {
+     var current = location.pathname;
+     console.log(current);
+     $('#navbarSupportedContent ul li a').each(function(){
+         var $this = $(this);
+         // if the current path is like this link, make it active
+         if($this.attr('href').indexOf(current) !== -1){
+             $this.parent().addClass('active');
+             $this.parents('.menu-submenu').addClass('show-dropdown');
+            $this.parents('.menu-submenu').parent().addClass('active');
+         }else{
+             $this.parent().removeClass('active');
+         }
+   })
+ });</script>
 
 {% endblock  %}

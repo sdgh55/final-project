@@ -1,4 +1,4 @@
-from flask import render_template, url_for, request, redirect, session
+from flask import render_template, url_for, request, redirect, session, make_response
 from flaskapp import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from messages import *
@@ -58,6 +58,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password1']
+        remember_me = 'remember' in request.form
 
         user = db.session.query(User).filter_by(username=username).first()
 
@@ -65,6 +66,13 @@ def login():
             session["authenticated"] = True
             session["id"] = user.id
             session["username"] = user.username
+
+            remember_me = 'remember' in request.form
+
+            if remember_me:
+                resp = make_response(redirect(url_for('dashboard')))
+                resp.set_cookie('remember_me', '1', max_age=365 * 24 * 60 * 60)
+                return resp
             return redirect('/posts')
         else:
             flash('Username or password incorrect. Please try again.', 'error')

@@ -7,39 +7,123 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link href="/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="{{ url_for('static', filename='js/base.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <title>{% block title %}{% endblock  %}</title>
 {% block head %}
 {% endblock %}
 
 </head>
-<body>
-<div class="container">
-    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-        <img src="https://moodle.astanait.edu.kz/pluginfile.php/1/core_admin/logocompact/300x300/1677736259/logo%20AITU%28imageonly%29.png" class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></img>
-        <span class="fs-4">AITUgram</span>
-      </a>
-
-      <ul class="nav nav-pills">
-        <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
-        <li class="nav-item"><a href="/posts" class="nav-link">Posts</a></li>
-        <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
-        <li class="nav-item"><a href="/send_message" class="nav-link">Send message</a></li>
-        <li class="nav-item"><a href="/view_messages" class="nav-link">Messages</a></li>
-        <li class="nav-item"><a href="/friends" class="nav-link">Friends</a></li>
-        <li class="nav-item"><a href="/friend_requests" class="nav-link">Friend requests</a></li>
-          {% if session.authenticated %}
-              <li class="nav-item"><a href="/user_page" class="nav-link">Friend requests</a></li>
-              <a href="/create" class="nav-link active" aria-current="page">Add new post</a>
-              <li class="nav-item"><a href="/logout" class="nav-link active" aria-current="page">Log out</a></li>
-           {% else %}
-              <li class="nav-item"><a href="/login" class="nav-link active" aria-current="page">Login</a></li>
-              <li class="nav-item"><a href="/register" class="nav-link active" aria-current="page">Register</a></li>
-          {% endif%}
-      </ul>
-    </header>
+<body translate="no">
+  <nav class="navbar navbar-expand-custom navbar-mainbg">
+  <a class="navbar-brand navbar-logo" href="/home">Postio</a>
+  <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <i class="fas fa-bars text-white"></i>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto">
+      <div class="hori-selector" style="top: 0px; left: 751.937px; height: 62.5px; width: 109.262px;">
+        <div class="left"></div>
+        <div class="right"></div>
+      </div>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('index') }}"><i class="fas fa-tachometer-alt"></i>Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('view_friends') }}"><i class="far fa-address-book"></i>Address Book</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/posts"><i class="far fa-clone"></i>Posts</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="javascript:void(0);"><i class="far fa-calendar-alt"></i>Calendar</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="javascript:void(0);"><i class="far fa-chart-bar"></i>Charts</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="javascript:void(0);"><i class="far fa-copy"></i>Documents</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="javascript:void(0);"><i class="far fa-calendar-alt"></i>Calendar</a>
+      </li>
+    </ul>
   </div>
+</nav>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"></script>
+      <script id="rendered-js">
+// ---------Responsive-navbar-active-animation-----------
+function test() {
+  var tabsNewAnim = $("#navbarSupportedContent");
+  var selectorNewAnim = $("#navbarSupportedContent").find("li").length;
+  var activeItemNewAnim = tabsNewAnim.find(".active");
+  var activeWidthNewAnimHeight = activeItemNewAnim.innerHeight();
+  var activeWidthNewAnimWidth = activeItemNewAnim.innerWidth();
+  var itemPosNewAnimTop = activeItemNewAnim.position();
+  var itemPosNewAnimLeft = activeItemNewAnim.position();
+  $(".hori-selector").css({
+    top: itemPosNewAnimTop.top + "px",
+    left: itemPosNewAnimLeft.left + "px",
+    height: activeWidthNewAnimHeight + "px",
+    width: activeWidthNewAnimWidth + "px" });
+
+  $("#navbarSupportedContent").on("click", "li", function (e) {
+    $("#navbarSupportedContent ul li").removeClass("active");
+    $(this).addClass("active");
+    var activeWidthNewAnimHeight = $(this).innerHeight();
+    var activeWidthNewAnimWidth = $(this).innerWidth();
+    var itemPosNewAnimTop = $(this).position();
+    var itemPosNewAnimLeft = $(this).position();
+    $(".hori-selector").css({
+      top: itemPosNewAnimTop.top + "px",
+      left: itemPosNewAnimLeft.left + "px",
+      height: activeWidthNewAnimHeight + "px",
+      width: activeWidthNewAnimWidth + "px" });
+
+  });
+}
+$(document).ready(function () {
+  setTimeout(function () {
+    test();
+  });
+});
+$(window).on("resize", function () {
+  setTimeout(function () {
+    test();
+  }, 500);
+});
+$(".navbar-toggler").click(function () {
+  $(".navbar-collapse").slideToggle(300);
+  setTimeout(function () {
+    test();
+  });
+});
+
+// --------------add active class-on another-page move----------
+jQuery(document).ready(function ($) {
+  // Get current path and find target link
+  var path = window.location.pathname.split("/").pop();
+
+  // Account for home page with empty path
+  if (path == "") {
+    path = "index.html";
+  }
+
+  var target = $('#navbarSupportedContent ul li a[href="' + path + '"]');
+  // Add active class to target link
+  target.parent().addClass("active");
+});
+
+    </script>
+
+
+
+
+
+
        {% block body %}{% endblock  %}
 <div class="container">
   <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
