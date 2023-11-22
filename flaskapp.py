@@ -20,6 +20,8 @@ class User(db.Model):
     name = db.Column(db. String, nullable=False)
     username = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=True)
+    about_me = db.Column(db.String(140))
     articles = db.relationship('Article', back_populates='user')
     sent_messages = db.relationship('Chat', foreign_keys='Chat.sender_id', back_populates='sender')
     received_messages = db.relationship('Chat', foreign_keys='Chat.receiver_id', back_populates='receiver')

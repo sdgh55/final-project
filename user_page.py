@@ -5,11 +5,11 @@ from flaskapp import *
 import os
 
 
-@app.route('/user_page', methods=['GET', 'POST'])
-def user_page():
+@app.route('/user_page/<int:current_user_id>', methods=['GET', 'POST'])
+def user_page(current_user_id):
     if 'id' in session:
         user_id = session['id']
-        user = User.query.get(user_id)
+        user = User.query.get(current_user_id)
 
         if user:
             return render_template('user_page.html', user=user)
@@ -26,9 +26,11 @@ def edit_user():
 
         if user:
             if request.method == 'POST':
-                # Обработка данных, отправленных пользователем для редактирования профиля
                 user.name = request.form['name']
                 user.username = request.form['username']
+                user.about_me = request.form['about_me']
+                user.email = request.form['email']
+
 
                 if 'profile_image' in request.files:
                     file = request.files['profile_image']
@@ -43,11 +45,11 @@ def edit_user():
                         file.save(file_path)
 
                         # Сохранение пути к файлу изображения в базе данных
-                        user.profile_image = file_path
+                        user.profile_image = file_path.replace('\\', '/')
 
                 db.session.commit()
 
-                return redirect('/user_page')
+                return redirect('/user_page/' + str(user_id))
 
             else:
                 return render_template('edit_user.html', user=user)

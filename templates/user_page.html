@@ -3,15 +3,98 @@
 {% block title %}
 User Page
 {% endblock  %}
+{% block head %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+{% endblock %}
 
 {% block body %}
 <div class="container mt-5">
-    <h1>User Page</h1>
-    <img src="{{ user.profile_image }}" alt="Profile Image">
-    <p>ID: {{ user.id }}</p>
-    <p>Name: {{ user.name }}</p>
-    <p>Username: {{ user.username }}</p>
+<section class="h-100 gradient-custom-2">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-lg-9 col-xl-7">
+        <div class="card">
+          <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
+            <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+           {% if user.profile_image %}
+    <img src="{{ url_for('static', filename=user.profile_image.replace('static\\', '').replace('\\', '/')) }}" alt="Profile Image" class="img-fluid img-thumbnail mt-4 mb-2"
+        style="width: 150px; z-index: 1">
+{% endif %}
 
-    <a href="{{ url_for('edit_user') }}">Edit Profile</a>
+                {% if 'id' in session %}
+        {% if session['id'] == user.id %}
+  <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
+        style="z-index: 1; margin-top: 40px;">
+        <a href="{{ url_for('edit_user') }}"  style="text-decoration: none; color: inherit;">Edit Profile</a>
+         </button>
+        {% else %}
+          <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
+                    style="z-index: 1; margin-top: 35px;" disabled>
+                Edit Profile
+            </button>
+        {% endif %}
+    {% endif %}
+          </div>
+            <div class="ms-3 d-flex flex-wrap align-items-start" style="margin-top: 130px;">
+                <div class="me-5">
+             <h5>ID: {{ user.id }}</h5>
+                </div>
+                <div class="me-5">
+             <h5>{{ user.name }}</h5>
+                </div>
+                <div class="me-5">
+             <h5>{{ user.username }}</h5>
+                </div>
+                {% if user.email %}
+                    <div>
+                <h5>Email: {{ user.email }}</h5>
+                   </div>
+                {% endif %}
+            </div>
+          </div>
+          <div class="p-4 text-black" style="background-color: #f8f9fa;">
+            <div class="d-flex justify-content-end text-center py-1">
+                <div style="margin-right: 20px;">
+                <p class="mb-1 h5">{{ user.friends.count() }}</p>
+                <p class="small text-muted mb-0">Friends</p>
+              </div>
+              <div>
+                <p class="mb-1 h5">{{ user.articles|length }}</p>
+                <p class="small text-muted mb-0">Number of posts</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4 text-black">
+            <div class="mb-5">
+              <p class="lead fw-normal mb-1">About</p>
+              <div class="p-4" style="background-color: #f8f9fa;">
+                  {% if user.about_me %}
+                <p class="font-italic mb-1">{{ user.about_me }}</p>
+                  {% else %}
+                <p class="font-italic mb-1">Nothing</p>
+                  {% endif %}
+              </div>
+            </div>
+           <div class="d-flex justify-content-between align-items-center mb-4">
+    <p class="lead fw-normal mb-0">User Information:</p>
+    <p class="mb-0">
+         {% if 'id' in session and session['id'] == user.id %}
+            {% if user.password %}
+                Password set
+            {% else %}
+                Password not set
+            {% endif %}
+        {% else %}
+            <!-- Пользователь не может видеть пароль других пользователей -->
+            Hidden
+        {% endif %}
+    </p>
+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 </div>
 {% endblock %}
