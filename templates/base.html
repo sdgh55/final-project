@@ -6,6 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/about.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link href="/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="{{ url_for('static', filename='js/base.js') }}"></script>
@@ -16,7 +17,6 @@
 
 </head>
 <body translate="no">
-<header>
   <nav class="navbar navbar-expand-custom navbar-mainbg">
   <a class="navbar-brand navbar-logo" href="/home">Postio</a>
   <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,21 +38,43 @@
         <a class="nav-link" href="/posts"><i class="far fa-clone"></i>Posts</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/send_message"><i class="far fa-calendar-alt"></i>Calendar</a>
+        <a class="nav-link" href="/create"><i class="far fa-calendar-alt"></i>Add new post</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="/view_messages"><i class="far fa-chart-bar"></i>Charts</a>
+        <a class="nav-link" href="javascript:void(0);"><i class="far fa-chart-bar"></i>Charts</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/about"><i class="far fa-copy"></i>Documents</a>
+        <a class="nav-link" href="javascript:void(0);"><i class="far fa-copy"></i>Documents</a>
       </li>
         <li class="nav-item">
         <a class="nav-link" href="javascript:void(0);"><i class="far fa-calendar-alt"></i>Calendar</a>
       </li>
+        {% if session.authenticated %}
+        {% else %}
+            <li class="nav-item">
+        <a class="nav-link" href="/login"><i class="far fa-clone"></i>Log in</a>
+      </li>
+      {% endif %}
     </ul>
   </div>
+      {% if session.authenticated %}
+      <div class="flexyphoto flex-shrink-0 dropdown">
+          <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle show" data-bs-toggle="dropdown" aria-expanded="true">
+          {% if user %}
+            <img src="{{ user.profile_image }}" alt="User Photo" width="32" height="32" class="rounded-circle">
+          </a>
+          {% endif %}
+          <ul class="dropdown-menu text-small shadow show" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 34.4px, 0px);" data-popper-placement="bottom-end">
+            <li><a class="dropdown-item" href="{{ url_for('user_page', current_user_id=session.id) }}">My page</a></li>
+            <li><a class="dropdown-item" href="/friends">Friends</a></li>
+            <li><a class="dropdown-item" href="/posts">Posts</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+          </ul>
+        </div>
+      {% else %}
+      {% endif %}
 </nav>
-</header>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"></script>
@@ -71,7 +93,6 @@ function test() {
     left: itemPosNewAnimLeft.left + "px",
     height: activeWidthNewAnimHeight + "px",
     width: activeWidthNewAnimWidth + "px" });
-
   $("#navbarSupportedContent").on("click", "li", function (e) {
     $("#navbarSupportedContent ul li").removeClass("active");
     $(this).addClass("active");
@@ -127,20 +148,100 @@ jQuery(document).ready(function ($) {
 
 
        {% block body %}{% endblock  %}
-<div class="container">
-  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-    <p class="col-md-4 mb-0 text-body-secondary">© 2023 AITUgram, Inc</p>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
 
-    <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-      <img src="https://moodle.astanait.edu.kz/pluginfile.php/1/core_admin/logocompact/300x300/1677736259/logo%20AITU%28imageonly%29.png" class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-    </a>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
-    <ul class="nav col-md-4 justify-content-end">
-      <li class="nav-item"><a href="/" class="nav-link px-2 text-body-secondary">Home</a></li>
-      <li class="nav-item"><a href="/posts" class="nav-link px-2 text-body-secondary">Posts</a></li>
-      <li class="nav-item"><a href="/about" class="nav-link px-2 text-body-secondary">About</a></li>
-    </ul>
-  </footer>
+<h1><center>Alash power</center></h1>
+
+<!--footer starts from here-->
+<footer class="footer">
+<div class="container bottom_border">
+<div class="row">
+<div class=" col-sm-4 col-md col-sm-4  col-12 col">
+<h5 class="headin5_amrc col_white_amrc pt2">Find us</h5>
+<!--headin5_amrc-->
+<p class="mb10">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+<p><i class="fa fa-location-arrow"></i> @khissamiden </p>
+<p><i class="fa fa-phone"></i>  +77780106434  </p>
+<p><i class="fa fa fa-envelope"></i> ahisamiden1@gmail.com  </p>
+
+
 </div>
+
+
+<div class=" col-sm-4 col-md  col-6 col">
+<h5 class="headin5_amrc col_white_amrc pt2">Quick links</h5>
+<!--headin5_amrc-->
+<ul class="footer_ul_amrc">
+<li><a href="#">Image Rectoucing</a></li>
+<li><a href="#">Clipping Path</a></li>
+<li><a href="#">Hollow Man Montage</a></li>
+<li><a href="#">Ebay & Amazon</a></li>
+<li><a href="#">Hair Masking/Clipping</a></li>
+<li><a href="#">Image Cropping</a></li>
+</ul>
+<!--footer_ul_amrc ends here-->
+</div>
+
+
+<div class=" col-sm-4 col-md  col-6 col">
+<h5 class="headin5_amrc col_white_amrc pt2">Quick links</h5>
+<!--headin5_amrc-->
+<ul class="footer_ul_amrc">
+<li><a href="#">Remove Background</a></li>
+<li><a href="#">Shadows & Mirror Reflection</a></li>
+<li><a href="#">Logo Design</a></li>
+<li><a href="#">Vectorization</a></li>
+<li><a href="#">Hair Masking/Clipping</a></li>
+<li><a href="#">Image Cropping</a></li>
+</ul>
+<!--footer_ul_amrc ends here-->
+</div>
+
+
+<div class=" col-sm-4 col-md  col-12 col">
+<h5 class="headin5_amrc col_white_amrc pt2">Follow us</h5>
+<!--headin5_amrc ends here-->
+
+<ul class="footer_ul2_amrc">
+    <li><a href="#"><i class="fab fa-twitter fleft padding-right"></i> </a><p>if you want to contact zhaslan...<a href="#">https://www.zhslnass.com/</a></p></li>
+<li><a href="#"><i class="fab fa-twitter fleft padding-right"></i> </a><p>if you want to contact ayan...<a href="#">https://www.ayan.com/</a></p></li>
+<li><a href="#"><i class="fab fa-twitter fleft padding-right"></i> </a><p>if you want to contact nurda...<a href="#">https://www.nurda.com/</a></p></li>
+</ul>
+<!--footer_ul2_amrc ends here-->
+</div>
+</div>
+</div>
+
+
+<div class="container">
+<ul class="foote_bottom_ul_amrc">
+<li><a href="/home">Home</a></li>
+<li><a href="/about">About</a></li>
+<li><a href="/posts">Posts</a></li>
+</ul>
+<!--foote_bottom_ul_amrc ends here-->
+<p class="text-center">Copyright @2023 | Designed With by <a href="#">Zhaslan Assignment</a></p>
+
+<ul class="social_footer_ul">
+<li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+<li><a href="#"><i class="fab fa-twitter"></i></a></li>
+<li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+<li><a href="#"><i class="fab fa-instagram"></i></a></li>
+</ul>
+<!--social_footer_ul ends here-->
+</div>
+
+</footer>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>

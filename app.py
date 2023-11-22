@@ -101,7 +101,15 @@ def update_account(id):
     return render_template('update_account.html', user=user)
 
 
+# Context processor to make User class available globally
+@app.context_processor
+def inject_user():
+    if 'id' in session:
+        user_id = session['id']
+        user = User.query.get(user_id)
+        return dict(User=User, user=user)
 
+    return dict(User=None, user=None)
 
 
 

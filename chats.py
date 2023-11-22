@@ -2,11 +2,10 @@ from flask import render_template, redirect, url_for, request, session
 from flaskapp import *
 
 
-
-
 @socketio.on('connect')
 def handle_connect():
     print('Client connected')
+
 
 @socketio.on('disconnect')
 def handle_disconnect():
@@ -34,7 +33,22 @@ def chat(receiver_id):
             return render_template('chat.html', receiver=receiver, conversation_id=conversation_id, messages=messages)
         else:
             return render_template('error.html', error='User not found')
+    else:
+        return redirect('/login')
 
+
+@app.route('/delete_history/<int:receiver_id>')
+def delete_history(receiver_id):
+    if 'id' in session:
+        user_id = session['id']
+        # Generate conversation_id based on user IDs
+        conversation_id = f"{user_id}_{receiver_id}"
+
+        # Delete messages for the conversation
+        Chat.query.filter_by(conversation_id=conversation_id).delete()
+        db.session.commit()
+
+        return redirect(url_for('chat', receiver_id=receiver_id))
     else:
         return redirect('/login')
 
@@ -82,7 +96,6 @@ def handle_join(data):
     ]
 
     socketio.emit('load_messages', serialized_messages, room=conversation_id)
-
 
 
 @socketio.on('leave')

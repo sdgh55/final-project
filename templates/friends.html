@@ -3,6 +3,10 @@
 {% block title %}
 Friends
 {% endblock  %}
+{% block head %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/friends.css')}}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
 
 
 {% block body %}
@@ -39,6 +43,48 @@ Friends
             <input type="submit" class="btn btn-warning" value="Send friendship">
          </form>
      </div>
+</div>
+
+<div class="container">
+ {% for friendship in friendships %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="people-nearby">
+
+              <div class="nearby-user">
+                <div class="row">
+                  <div class="col-md-2 col-sm-2">
+                    <img src="{{ friendship.friend_rel.profile_image }}" alt="user" class="profile-photo-lg">
+                  </div>
+                  <div class="col-md-7 col-sm-7">
+                      {% if friendship.user_id == user.id %}
+                    <h5><a href="{{ url_for('user_page', current_user_id=friendship.friend_rel.id) }}" class="profile-link">{{ friendship.friend_rel.name }}</a></h5>
+                  </div>
+                  <div class="col-md-3 col-sm-3">
+                   <form id="removeFriendForm_{{ friendship.friend_rel.id }}" method="post" action="{{ url_for('remove_friend', friend_id=friendship.id) }}">
+                    <input type="submit" class="btn btn-danger" value="Remove Friend">
+                </form>
+                <form method="get" action="{{ url_for('chat', receiver_id=friendship.friend_rel.id) }}">
+                    <input type="submit" class="btn btn-primary" value="Send Message">
+                </form>
+                      {% else %}
+                {{ friendship.user_rel.name }}
+                <form id="removeFriendForm_{{ friendship.user_rel.id }}" method="post" action="{{ url_for('remove_friend', friend_id=friendship.id) }}">
+                    <input type="submit" class="btn btn-danger" value="Remove Friend">
+                </form>
+                <form method="get" action="{{ url_for('chat', receiver_id=friendship.user_rel.id) }}">
+                    <input type="submit" class="btn btn-primary" value="Send Message">
+                </form>
+            {% endif %}
+        </h4>
+        <p><b>Date adding: {{ friendship.date_added.date() }}</b></p>
+                  {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>$(window).on('load',function () {

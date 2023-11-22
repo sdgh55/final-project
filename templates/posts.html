@@ -8,7 +8,7 @@ Posts
 {% endblock %}
 
 {% block body %}
-<div class="container mt-5">
+<div class="container-fluid">
     {% for post in posts %}
   <div class="row">
     <div class="col-12">
@@ -23,15 +23,14 @@ Posts
           </div>
         <div class="blog-card__head">
           <span class="date__box">
-            <span class="date__day">{{ post.date_day }}</span>
-            <span class="date__month">{{ post.date_month }}</span>
+            <span class="date__day">{{ post.date.date() }}</span>
           </span>
         </div>
         <div class="blog-card__info">
           <h5>{{ post.title }}</h5>
           <p>
+              <a class="icon-link"><i class="fa fa-comments-o"></i> Author:</a>
             <a href="{{ url_for('user_page', current_user_id=post.user.id) }}" class="icon-link mr-3"><i class="fa fa-pencil-square-o"></i> {{ post.user.name }}</a>
-            <a href="#" class="icon-link"><i class="fa fa-comments-o"></i> 150</a>
           </p>
           <p>{{ post.text | truncate(10)}}</p>
           <a href="/posts/{{post.id}}" class="btn btn--with-icon"><i class="btn-icon fa fa-long-arrow-right"></i>READ MORE</a>
@@ -42,11 +41,6 @@ Posts
   </div>
 </div>
 
-<section class="detail-page">
-  <div class="container mt-5">
-
-  </div>
-</section>
     <script>$(window).on('load',function () {
      var current = location.pathname;
      console.log(current);
