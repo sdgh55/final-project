@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Messages
+{% endblock  %}
+
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Messages</h1>
+    {% for message in messages %}
+    <div class="alert alert-info">
+        <h2>Sent by: {{ message.sender.username }}</h2>
+        <hr>
+        <p>{{message.message}}</p>
+        <p><b>Date: {{message.date.date() }}</b></p>
+    </div>
+    {% endfor %}
+</div>
+
+      <script>$(window).on('load',function () {
+     var current = location.pathname;
+     console.log(current);
+     $('#navbarSupportedContent ul li a').each(function(){
+         var $this = $(this);
+         // if the current path is like this link, make it active
+         if($this.attr('href').indexOf(current) !== -1){
+             $this.parent().addClass('active');
+             $this.parents('.menu-submenu').addClass('show-dropdown');
+            $this.parents('.menu-submenu').parent().addClass('active');
+         }else{
+             $this.parent().removeClass('active');
+         }
+   })
+ });</script>
+
+{% endblock  %}\

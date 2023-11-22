@@ -1,31 +1,24 @@
 {% extends 'base.html' %}
-
 {% block title %}
-Creating
+Send message
 {% endblock  %}
 
 {% block body %}
 <div class="container mt-5">
-  <h1>Add new post</h1>
+  <h1>Send new message</h1>
   <form method="post" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
     <div class="form-group">
-      <label for="title">Post title</label>
-      {{ form.title(class="form-control") }}
+        <input type="text" name="receiver_username" id="receiver_username" class="form-control" placeholder="Receiver username">
     </div>
     <div class="form-group">
-      <label for="text">Post text</label>
-      {{ form.text(class="form-control") }}
+        <input type="text" name="message" id="message" class="form-control" placeholder="Input your message">
     </div>
-      <div class="form-group">
-        <label for="image">Image</label>
-        {{ form.image(class="form-control") }}
-    </div>
-      {{ form.submit(class="btn btn-success", type="submit") }}
-      <a href="{{ url_for('posts') }}" class="btn btn-secondary">Cancel</a>
+      <a href="{{ url_for('posts') }}" class="btn btn-success", type="submit" class="btn btn-secondary">Cancel</a>
+      <button class="btn btn-success" type="submit">Send</button>
   </form>
 </div>
-    <script>$(window).on('load',function () {
+
+      <script>$(window).on('load',function () {
      var current = location.pathname;
      console.log(current);
      $('#navbarSupportedContent ul li a').each(function(){

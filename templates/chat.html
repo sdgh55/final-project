@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Chat with {{ receiver.name }}
+{% endblock  %}
+
+{% block body %}
+<style>
+    .container {
+        width: 80%;
+        margin: auto;
+    }
+
+    #chat-window {
+        border: 1px solid #ccc;
+        padding: 10px;
+        height: 300px;
+        overflow-y: scroll;
+        margin-bottom: 10px;
+    }
+
+    .notification {
+        color: #888;
+    }
+
+    .message {
+        padding: 5px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+    }
+
+    .sent {
+        background-color: #007bff;
+        color: #fff;
+        float: right;
+        clear: both;
+        margin-left: 50%;
+    }
+
+    .received {
+        background-color: #a0a0a0;
+        float: left;
+        clear: both;
+        margin-right: 50%;
+    }
+
+    .user-1 {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .user-2 {
+        background-color: #dc3545;
+        color: #fff;
+    }
+</style>
+<div class="container mt-5">
+    <h1>Chat with {{ receiver.name }}</h1>
+    <div id="chat-window" class="bg-light p-3">
+        <ul id="messages" class="list-unstyled"></ul>
+    </div>
+    <form id="form" class="d-flex">
+        <input id="input" autocomplete="off" class="form-control" style="flex: 1;" />
+        <button class="btn btn-primary ml-2">Send</button>
+    </form>
+    <button class="btn btn-danger mt-3" onclick="deleteHistory()">Delete Chat History</button>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+<script>
+    var socket = io.connect('http://127.0.0.1:5000');
+    var senderId = "{{ session['id'] }}";
+    var receiverId = "{{ receiver.id }}";
+
+    // Emit a 'join' event when the page loads
+    socket.emit('join', {'sender_id': senderId, 'receiver_id': receiverId});
+
+    socket.on('load_messages', function (previousMessages) {
+        var ul = document.getElementById('messages');
+
+        // Display previous messages
+        previousMessages.forEach(function (msg) {
+            var li = document.createElement('li');
+
+            if (msg.sender_id === senderId) {
+                li.className = 'message sent user-' + senderId;
+            } else {
+                li.className = 'message received user-' + msg.sender_id;
+            }
+
+            li.appendChild(document.createTextNode(msg.sender.name + ': ' + msg.content));
+            ul.appendChild(li);
+        });
+    });
+
+    socket.on('message', function (msg) {
+        var ul = document.getElementById('messages');
+        var li = document.createElement('li');
+
+        if (msg.sender_id === senderId) {
+            li.className = 'message sent user-' + senderId;
+        } else {
+            li.className = 'message received user-' + msg.sender_id;
+        }
+
+        li.appendChild(document.createTextNode(msg.sender + ': ' + msg.content));
+        ul.appendChild(li);
+    });
+
+    document.getElementById('form').onsubmit = function () {
+        var input = document.getElementById('input');
+        socket.emit('message', {'sender_id': senderId, 'receiver_id': receiverId, 'content': input.value});
+        input.value = '';
+        return false;
+    };
+
+    // Handle disconnection: emit a 'leave' event when the page is closed or unloaded
+    window.onbeforeunload = function () {
+        socket.emit('leave', {'sender_id': senderId, 'receiver_id': receiverId});
+    };
+
+    function deleteHistory() {
+        var confirmation = confirm('Are you sure you want to delete the chat history?');
+
+        if (confirmation) {
+            // Отправляем событие на сервер для удаления истории
+            socket.emit('delete_history', {'sender_id': senderId, 'receiver_id': receiverId});
+            // Очищаем отображение сообщений на клиенте
+            document.getElementById('messages').innerHTML = '';
+        }
+    }
+
+    // Обработчик события 'history_deleted' от сервера
+    socket.on('history_deleted', function(data) {
+        console.log('History deleted:', data);
+        alert('Chat history deleted successfully!');
+    });
+</script>
+{% endblock %}

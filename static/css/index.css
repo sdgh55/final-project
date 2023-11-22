@@ -1,0 +1,16 @@
+.text-on-background {
+  color: white;
+  text-shadow: 1px 1px 2px black;
+
+}
+
+
+.bg-body-tertiary {
+    background-image: url('https://avatars.mds.yandex.net/i?id=dbe6fc9cdc33790cc2526b3b734ff7a33339b72c-10415038-images-thumbs&n=13');
+    background-size: cover; /* Адаптация изображения под размер блока */
+    background-position: center; /* Позиция изображения */
+    opacity: 0.9; /* Прозрачность фона */
+    width: 100%;
+    margin-top: -16px;
+    margin-bottom: -16px;
+}

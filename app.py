@@ -1,12 +1,18 @@
-from flask import render_template, url_for, request, redirect, session
+from flask import render_template, url_for, request, redirect, session, make_response
 from flaskapp import *
 from werkzeug.security import generate_password_hash, check_password_hash
+from messages import *
+from friends import *
+from chats import *
+from posting import *
+from user_page import *
 
 
 @app.route('/')
 @app.route('/home')
 def index():
     return render_template("index.html")
+
 
 @app.route('/about')
 def about():
@@ -30,6 +36,7 @@ def register_user():
 
         existing_user = User.query.filter_by(username=username).first()
         if existing_user:
+            flash("Username already taken. Please choose a different username.", 'error')
             return redirect(url_for("register_user", error="Already registered!"))
 
         hashed_password = generate_password_hash(password1, method='pbkdf2:sha1')
@@ -51,6 +58,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password1']
+        remember_me = 'remember' in request.form
 
         user = db.session.query(User).filter_by(username=username).first()
 
@@ -58,9 +66,18 @@ def login():
             session["authenticated"] = True
             session["id"] = user.id
             session["username"] = user.username
+
+            remember_me = 'remember' in request.form
+
+            if remember_me:
+                resp = make_response(redirect(url_for('dashboard')))
+                resp.set_cookie('remember_me', '1', max_age=365 * 24 * 60 * 60)
+                return resp
             return redirect('/posts')
         else:
-            return render_template("login.html", context="The username or password is incorrect")
+            flash('Username or password incorrect. Please try again.', 'error')
+            return redirect('/login')
+
 
     return render_template("login.html", context=None)
 
@@ -84,45 +101,16 @@ def update_account(id):
     return render_template('update_account.html', user=user)
 
 
-
-
-
-@app.route('/create', methods=['POST', 'GET'])
-def create():
-
+# Context processor to make User class available globally
+@app.context_processor
+def inject_user():
     if 'id' in session:
         user_id = session['id']
+        user = User.query.get(user_id)
+        return dict(User=User, user=user)
 
-        if request.method == 'POST':
-            title = request.form['title']
-            text = request.form['text']
+    return dict(User=None, user=None)
 
-            article = Article(title=title, text=text, user_id=user_id)
-            try:
-                db.session.add(article)
-                db.session.commit()
-                return redirect('/posts')
-
-            except:
-                return 'Error while adding new post'
-
-
-        else:
-            return render_template('create.html')
-
-    else:
-        return redirect('/login')
-
-
-
-@app.route('/posts')
-def posts():
-    if 'id' in session:
-        user_id = session['id']
-        articles = Article.query.order_by(Article.date.desc()).all()
-        return render_template('posts.html', posts=articles)
-    else:
-        return redirect('/login')
 
 
 
@@ -134,46 +122,11 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/posts/<int:id>')
-def posts_detail(id):
-    article = Article.query.get(id)
-    return render_template("post_detail.html", post=article)
-
-
-@app.route('/posts/<int:id>/del')
-def delete(id):
-    article = Article.query.get_or_404(id)
-
-    try:
-        db.session.delete(article)
-        db.session.commit()
-        return redirect('/posts')
-    except:
-        return "Error while deleting post"
-
-
-@app.route('/posts/<int:id>/update', methods=['POST', 'GET'])
-def update(id):
-    article = Article.query.get(id)
-    if request.method == 'POST':
-        article.title = request.form['title']
-        article.text = request.form['text']
-
-
-        try:
-            db.session.commit()
-            return redirect('/posts')
-
-        except:
-            return 'Error while updating new post'
-
-
-    else:
-        article = Article.query.get(id)
-        return render_template('post_update.html', posts=article)
-
 
 
 
 if __name__ == "__main__":
-        app.run(debug=True)
+        #app.run(debug=True)
+        socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
+        #socketio.run(app, debug=True, use_reloader=False, host='0.0.0.0', port=5000, allow_unsafe_werkzeug=True)
+

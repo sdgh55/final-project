@@ -1,0 +1,19 @@
+
+.friend-row {
+    transition: background-color 0.3s ease;
+}
+
+.friend-row:hover {
+    background-color: #f8f9fa; /* Цвет, который будет появляться при наведении */
+}
+
+/* Разделите кнопки "Remove Friend" и "Send Message" */
+.friend-actions {
+    margin-top: 10px;
+}
+
+/* Избегайте прилипания кнопок друг к другу */
+.friend-actions form {
+    display: inline-block;
+    margin-right: 10px;
+}

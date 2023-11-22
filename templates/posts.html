@@ -3,19 +3,58 @@
 {% block title %}
 Posts
 {% endblock  %}
-
+{% block head %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/posts.css') }}">
+{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1>All posts</h1>
+<div class="container-fluid">
     {% for post in posts %}
-    <div class="alert alert-info">
-        <h2>{{post.title}}</h2>
-        <hr>
-        <p><b>Date: {{post.date.date() }}</b></p>
-        <a href="/posts/{{post.id}}" class="btn btn-warning">Read more</a>
+  <div class="row">
+    <div class="col-12">
+      <article class="blog-card">
+        <div class="blog-card__background">
+          <div class="card__background--wrapper">
+              {% if post.image_path %}
+                 <img src="{{ post.image_path }}" alt="Post Image" class="card__background--main">
+               {% endif %}
+              <div class="card__background--layer"></div>
+            </div>
+          </div>
+        <div class="blog-card__head">
+          <span class="date__box">
+            <span class="date__day">{{ post.date.date() }}</span>
+          </span>
+        </div>
+        <div class="blog-card__info">
+          <h5>{{ post.title }}</h5>
+          <p>
+              <a class="icon-link"><i class="fa fa-comments-o"></i> Author:</a>
+            <a href="{{ url_for('user_page', current_user_id=post.user.id) }}" class="icon-link mr-3"><i class="fa fa-pencil-square-o"></i> {{ post.user.name }}</a>
+          </p>
+          <p>{{ post.text | truncate(10)}}</p>
+          <a href="/posts/{{post.id}}" class="btn btn--with-icon"><i class="btn-icon fa fa-long-arrow-right"></i>READ MORE</a>
+        </div>
+      </article>
+      {% endfor %}
     </div>
-    {% endfor %}
+  </div>
 </div>
+
+    <script>$(window).on('load',function () {
+     var current = location.pathname;
+     console.log(current);
+     $('#navbarSupportedContent ul li a').each(function(){
+         var $this = $(this);
+         // if the current path is like this link, make it active
+         if($this.attr('href').indexOf(current) !== -1){
+             $this.parent().addClass('active');
+             $this.parents('.menu-submenu').addClass('show-dropdown');
+            $this.parents('.menu-submenu').parent().addClass('active');
+         }else{
+             $this.parent().removeClass('active');
+         }
+   })
+ });</script>
 
 {% endblock  %}
