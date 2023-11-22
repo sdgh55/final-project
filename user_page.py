@@ -31,21 +31,19 @@ def edit_user():
                 user.about_me = request.form['about_me']
                 user.email = request.form['email']
 
-
                 if 'profile_image' in request.files:
                     file = request.files['profile_image']
 
                     if file.filename != '' and allowed_file(file.filename):
-
-                        # Генерация уникального имени файла
+                        # Generate a unique filename
                         filename = secure_filename(file.filename)
-                        file_path = os.path.join(app.config['UPLOAD_FOLDER_PROFILE'], filename)
 
-                        # Сохранение файла на сервере
+                        # Save the file to the server
+                        file_path = os.path.join(app.config['UPLOAD_FOLDER_PROFILE'], filename)
                         file.save(file_path)
 
-                        # Сохранение пути к файлу изображения в базе данных
-                        user.profile_image = file_path.replace('\\', '/')
+                        # Save only the filename in the database
+                        user.profile_image = filename
 
                 db.session.commit()
 
