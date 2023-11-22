@@ -1,24 +1,32 @@
 {% extends 'base.html' %}
 
 {% block title %}
-{{post.title}}
+Posts
 {% endblock  %}
-
+{% block head %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/posts.css') }}">
+{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1>{{post.title}}</h1>
-    <div class="alert alert-info">
-        <h4>{{post.text}}</h4>
-        <hr>
-        <p><b>Date: {{post.date.date() }}</b></p>
-        {% if session.authenticated %}
-            {% if session.id == post.user_id %}
-        <a href="/posts/{{post.id}}/del" class="btn btn-danger">Delete</a>
-        <a href="/posts/{{post.id}}/update" class="btn btn-warning">Update</a>
-             {% endif %}
-        {% endif %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <article class="blog-card">
+        <div class="blog-card__info">
+          <h5>{{ post.title }}</h5>
+          <p>
+              <a class="icon-link"><i class="fa fa-comments-o"></i> Author:</a>
+            <a href="{{ url_for('user_page', current_user_id=post.user.id) }}" class="icon-link mr-3"><i class="fa fa-pencil-square-o"></i> {{ post.user.name }}</a>
+          </p>
+            <hr>
+          <p>{{ post.text}}</p>
+          <a href="/posts/{{post.id}}/update" class="btn btn--with-icon"><i class="btn-icon fa fa-long-arrow-right"></i>Update</a>
+                <a href="/posts/{{post.id}}/del" class="btn btn--with-icon"><i class="btn-icon fa fa-long-arrow-right"></i>Delete</a>
+        </div>
+      </article>
     </div>
+  </div>
 </div>
 
-{% endblock %}
+
+{% endblock  %}

@@ -19,7 +19,7 @@ def send_message():
                 try:
                     db.session.add(new_message)
                     db.session.commit()
-                    return "Message sent successfully"
+                    return redirect('/send_message')
                 except:
                     return "Error while sending the message"
 
@@ -38,7 +38,7 @@ def view_messages():
     if 'id' in session:
         user_id = session['id']
         user = User.query.get(user_id)
-        received_messages = user.received_messages  # Получить все сообщения, которые пользователь получил
+        received_messages = user.received_mails  # Получить все сообщения, которые пользователь получил
         return render_template('messages.html', messages=received_messages)
     else:
         return redirect('/login')

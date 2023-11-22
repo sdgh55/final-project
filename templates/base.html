@@ -17,11 +17,9 @@
 
 </head>
 <body translate="no">
-  <nav class="navbar navbar-expand-custom navbar-mainbg">
-  <a class="navbar-brand navbar-logo" href="/home">Postio</a>
-  <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <i class="fas fa-bars text-white"></i>
-  </button>
+<nav class="navbar navbar-expand-custom navbar-mainbg sticky-top">
+<img src="https://static.tildacdn.com/tild3063-3739-4635-a363-343965353863/handshake.svg" width="50" height="40" role="img" aria-label="Bootstrap">
+  <a class="navbar-brand navbar-logo" href="/home">Sqlgram</a>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav ml-auto">
       <div class="hori-selector" style="top: 0px; left: 751.937px; height: 62.5px; width: 109.262px;">
@@ -41,13 +39,13 @@
         <a class="nav-link" href="/create"><i class="far fa-calendar-alt"></i>Add new post</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="javascript:void(0);"><i class="far fa-chart-bar"></i>Charts</a>
+        <a class="nav-link" href="/friend_requests"><i class="far fa-chart-bar"></i>Friend requests</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="javascript:void(0);"><i class="far fa-copy"></i>Documents</a>
+        <a class="nav-link" href="/send_message"><i class="far fa-copy"></i>Send message</a>
       </li>
         <li class="nav-item">
-        <a class="nav-link" href="javascript:void(0);"><i class="far fa-calendar-alt"></i>Calendar</a>
+        <a class="nav-link" href="/view_messages"><i class="far fa-calendar-alt"></i>Mail</a>
       </li>
         {% if session.authenticated %}
         {% else %}
@@ -60,11 +58,11 @@
       {% if session.authenticated %}
       <div class="flexyphoto flex-shrink-0 dropdown">
           <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle show" data-bs-toggle="dropdown" aria-expanded="true">
-          {% if user %}
-            <img src="{{ user.profile_image }}" alt="User Photo" width="32" height="32" class="rounded-circle">
+          {% if user and user.profile_image %}
+            <img src="{{ url_for('static', filename=user.profile_image.replace('static\\', '').replace('\\', '/')) }}" alt="User Photo" width="32" height="32" class="rounded-circle">
           </a>
           {% endif %}
-          <ul class="dropdown-menu text-small shadow show" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 34.4px, 0px);" data-popper-placement="bottom-end">
+          <ul class="dropdown-menu text-small shadow" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 34.4px, 0px);" data-popper-placement="bottom-end">
             <li><a class="dropdown-item" href="{{ url_for('user_page', current_user_id=session.id) }}">My page</a></li>
             <li><a class="dropdown-item" href="/friends">Friends</a></li>
             <li><a class="dropdown-item" href="/posts">Posts</a></li>
@@ -156,7 +154,7 @@ jQuery(document).ready(function ($) {
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
-<h1><center>Alash power</center></h1>
+<h1><center></center></h1>
 
 <!--footer starts from here-->
 <footer class="footer">

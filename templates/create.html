@@ -6,25 +6,24 @@ Creating
 
 {% block body %}
 <div class="container mt-5">
-<h1>Add new post</h1>
-<form method="post" class="form-control", enctype="multipart/form-data">
-   {{ form.hidden_tag() }}
-        <div>
-            {{ form.title.label }}
-            {{ form.title }}
-        </div>
-        <div>
-            {{ form.text.label }}
-            {{ form.text }}
-        </div>
-        <div>
-            {{ form.image.label }}
-            {{ form.image }}
-        </div>
-        <div>
-            {{ form.submit }}
-        </div>
-</form>
+  <h1>Add new post</h1>
+  <form method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+      <label for="title">Post title</label>
+      {{ form.title(class="form-control") }}
+    </div>
+    <div class="form-group">
+      <label for="text">Post text</label>
+      {{ form.text(class="form-control") }}
+    </div>
+      <div class="form-group">
+        <label for="image">Image</label>
+        {{ form.image(class="form-control") }}
+    </div>
+      {{ form.submit(class="btn btn-success", type="submit") }}
+      <a href="{{ url_for('posts') }}" class="btn btn-secondary">Cancel</a>
+  </form>
 </div>
     <script>$(window).on('load',function () {
      var current = location.pathname;

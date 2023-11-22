@@ -26,7 +26,7 @@ Log in
           <font _mstmutation="1" _msttexthash="2384616" _msthash="6"> Remember me </font></label>
     </div>
     <button class="w-100 btn btn-lg btn-primary" type="submit" _msttexthash="630383" _msthash="7">Войти</button>
-    <p class="mt-5 mb-3 text-muted" _msttexthash="1858961" _msthash="8">© 2017–2021 гг.</p>
+    <p class="mt-5 mb-3 text-muted" _msttexthash="1858961" _msthash="8">Don't have an account? <a href="{{ url_for('register_user') }}">Register now</a></p>
   </form>
 </main>
         {% with messages = get_flashed_messages() %}
@@ -42,6 +42,21 @@ Log in
 {% endwith %}
 
 </div>
+     <script>$(window).on('load',function () {
+     var current = location.pathname;
+     console.log(current);
+     $('#navbarSupportedContent ul li a').each(function(){
+         var $this = $(this);
+         // if the current path is like this link, make it active
+         if($this.attr('href').indexOf(current) !== -1){
+             $this.parent().addClass('active');
+             $this.parents('.menu-submenu').addClass('show-dropdown');
+            $this.parents('.menu-submenu').parent().addClass('active');
+         }else{
+             $this.parent().removeClass('active');
+         }
+   })
+ });</script>
 
 
 
