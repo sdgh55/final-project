@@ -3,62 +3,60 @@
 {% block title %}
 About
 {% endblock  %}
-{% block head %}
-    <link href="/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-{% endblock %}
 {% block body %}
-<div class="container-fluid mt-7" style="margin-top: 50px;">
-<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-indicators">
-    <button type="button" data-bs-target="carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-    <button type="button" data-bs-target="carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-    <button type="button" data-bs-target="carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-  </div>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="nurda_img.jpg" class="d-block w-100" alt="...">
-      <div class="carousel-caption d-none d-md-block">
-        <h5>First slide label</h5>
-        <p>Some representative placeholder content for the first slide.</p>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img src="ayan_img.jpeg" class="d-block w-100" alt="...">
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Second slide label</h5>
-        <p>Some representative placeholder content for the second slide.</p>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img src="data:image/jpeg;base64,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" class="d-block w-100" alt="...">
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Third slide label</h5>
-        <p>Some representative placeholder content for the third slide.</p>
-      </div>
-    </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-</div> <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
+<div class="container-xl">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <h2>About Us</h2>
+      <div id="myCarousel" class="carousel slide" data-ride="carousel">
 
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
+        <ol class="carousel-indicators">
+          <li data-target="#myCarousel" data-slide-to="0" class=""></li>
+          <li data-target="#myCarousel" data-slide-to="1" class=""></li>
+          <li data-target="#myCarousel" data-slide-to="2" class="active"></li>
+        </ol>
+
+        <div class="carousel-inner">
+          <div class="carousel-item">
+            <div class="img-box"><img src="https://avatars.mds.yandex.net/i?id=8cfa2519767e000fbb44306314adcee45c011580-8496879-images-thumbs&amp;n=13" alt=""></div>
+            <p class="testimonial">A backend developer is a specialist who deals with the server side of websites, mobile and desktop applications and games. It implements the internal logic of the application, ensures its interaction with databases and external services.</p>
+            <p class="overview"><b>Zhaslan Kaukin</b>, Backend Developer</p>
+          </div>
+          <div class="carousel-item active carousel-item-left">
+            <div class="img-box"><img src="https://avatars.mds.yandex.net/i?id=87d71ab0564ce3d861475c0576e70623-5667262-images-thumbs&amp;n=13" alt=""></div>
+            <p class="testimonial">A frontend developer is a specialist who creates user interfaces. He is responsible for the entire external part of the site or application with which people interact: menus, product cards in the online store, buttons, feedback forms. Thanks to the high-quality work of the frontend developer, fast and convenient sites appear.</p>
+            <p class="overview"><b>Duman Nurdaulet</b>, Web Developer</p>
+          </div>
+          <div class="carousel-item carousel-item-next carousel-item-left">
+            <div class="img-box"><img src="https://avatars.mds.yandex.net/i?id=3b0ad79ebd1cb836159aaf4e93ce3e1d2632fcc0-7886515-images-thumbs&amp;n=13" alt=""></div>
+            <p class="testimonial">This is a relatively young, dynamically developing profession. A web designer uses markup, special programs and programming languages, designs the logical structure of web pages to create a user-friendly interface and is engaged in its artistic design.</p>
+            <p class="overview"><b>Khissamiden Ayan</b>, Designer</p>
+          </div>
+        </div>
+        <!-- Carousel controls -->
+        <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+          <i class="fa fa-angle-left"></i>
+        </a>
+        <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+          <i class="fa fa-angle-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+     <script>$(window).on('load',function () {
+     var current = location.pathname;
+     console.log(current);
+     $('#navbarSupportedContent ul li a').each(function(){
+         var $this = $(this);
+         // if the current path is like this link, make it active
+         if($this.attr('href').indexOf(current) !== -1){
+             $this.parent().addClass('active');
+             $this.parents('.menu-submenu').addClass('show-dropdown');
+            $this.parents('.menu-submenu').parent().addClass('active');
+         }else{
+             $this.parent().removeClass('active');
+         }
+   })
+ });</script>
 {% endblock  %}

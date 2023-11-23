@@ -8,6 +8,8 @@ from posting import *
 from user_page import *
 
 
+
+
 @app.route('/')
 @app.route('/home')
 def index():
@@ -120,6 +122,7 @@ def logout():
     session.pop('id', None)
     session.pop('username', None)
     return redirect(url_for('index'))
+
 
 
 
